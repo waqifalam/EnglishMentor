@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package messagesPackage;
+
+service MessagesService {
+    rpc sendTranscript(TranscriptRequest) returns (Empty);
+    rpc getResults(GetResultRequest) returns (stream TranscriptItem);
+}
+
+message Empty {}
+message GetResultRequest {
+    string uuid = 1;
+}
+message TranscriptItem {
+    int32 id = 1;
+    string text = 2;
+    string correction = 3;
+}
+
+message TranscriptRequest {
+    string uuid = 1;
+    TranscriptItem transcriptItem = 2;
+}
