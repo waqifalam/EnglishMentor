@@ -1,7 +1,7 @@
 require('dotenv').config()
 const fs = require('fs');
 const redis = require('redis');
-const client = redis.createClient(process.env.REDIS_PORT);
+const client = redis.createClient(process.env.REDIS_CONFIG);
 
 const args = process.argv;
 if (!args[2]) {
