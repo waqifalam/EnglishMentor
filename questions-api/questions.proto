@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package questionsPackage;
+
+service QuestionsService {
+    rpc getQuestion(noParam) returns (QuestionItem);
+}
+
+message noParam {}
+message QuestionItem {
+    int32 id = 1;
+    string text = 2;
+}
