@@ -22,8 +22,29 @@ const getCorrections = async (text) => {
     params: { text },
   };
 
-  const response = await axios.request(options);
-  return response.data;
+  const axiosResponse = await axios.request(options);
+  const grammarbotResponse = axiosResponse.data;
+
+  const { matches } = grammarbotResponse;
+
+  // Filter all spelling mistakes from speech to text API
+  const filteredMatches = matches.filter((match) => match.shortMessage !== 'Spelling mistake');
+
+  const corrections = filteredMatches.map((match) => {
+    const {
+      message, replacements, offset, length, sentence,
+    } = match;
+    return {
+      status: 'success',
+      message,
+      replacements,
+      offset,
+      length,
+      sentence,
+    };
+  });
+
+  return corrections.length ? corrections : [];
 };
 
 module.exports = {
