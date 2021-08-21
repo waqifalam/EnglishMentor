@@ -1,0 +1,17 @@
+{
+  "name": "add_questions",
+  "version": "1.0.0",
+  "description": "## Use the script This script will setup your local development Redis cache. To add questions to production, please change the env variables to appropriate destination.",
+  "main": "setup.js",
+  "scripts": {
+    "setup": "node setup.js QUESTIONS_FILE",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "redis": "^3.1.2"
+  }
+}
