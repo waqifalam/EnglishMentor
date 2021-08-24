@@ -7,7 +7,7 @@ import useCookies from '../hooks/useCookies';
 import ButtonContainer from '../containers/ButtonContainer';
 import Button from '../components/Button';
 import getQuestion from '../Network/getQuestion';
-import { v4 as uuidv4, v4 } from 'uuid';
+import { v4 } from 'uuid';
 import { StoreContext } from '../utils/store';
 
 const timeInterval = Number(process.env.NEXT_PUBLIC_TIMEINTERVAL);
@@ -25,7 +25,7 @@ const SpeakingSection = () => {
   } = useSpeechRecognition({});
 
   const [recordingTranscript, setRecordingTranscript] = useState(false);
-  const [cookies] = useCookies({});
+  const [cookies] = useCookies({ uuid: '' });
 
   useEffect(() => {
     if (finalTranscript !== '' && !listening) {
@@ -55,7 +55,7 @@ const SpeakingSection = () => {
     if (listening) {
         SpeechRecognition.stopListening();
         setRecordingTranscript(false);
-        setQuestion('...')
+        setQuestion('');
     }
     else {
       getQuestion()

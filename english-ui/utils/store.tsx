@@ -1,14 +1,20 @@
 import React, { useState } from 'react'
 
-export const StoreContext = React.createContext(null)
+const initialState = {
+  question: ['', () => {}],
+  results: [[], () => {}],
+};
 
-const StoreProvider = ({ children }) => {
-  const [question, setQuestion] = useState('...');
-  const [results, setResults] = useState([]);
+export const StoreContext = React.createContext(initialState);
 
+interface Props {
+  children?: React.ReactNode;
+}
+
+const StoreProvider: React.FC<Props> = ({ children }) => {
   const store = {
-    question: [question, setQuestion],
-    results: [results, setResults],
+    question: useState(''),
+    results: useState([]),
   };
 
   return <StoreContext.Provider value={store}>{children}</StoreContext.Provider>

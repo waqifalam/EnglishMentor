@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react'
 import getCookies from '../utils/GetCookies';
 
-const useCookies = (defaultValue = {}) => {
+interface Cookies {
+    uuid: string
+}
+
+const useCookies = (defaultValue: Cookies = { uuid: '' }) => {
     const [cookies, setCookies] = useState(defaultValue);
 
     useEffect(() => {
-        const cookies = getCookies();
+        const cookies: Cookies = getCookies();
         setCookies(cookies);
     }, []);
 

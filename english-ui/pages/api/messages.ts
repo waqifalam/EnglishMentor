@@ -1,6 +1,6 @@
 import messageApiClient from '../../lib/grpc/MessagesApiController';
 
-export default function handler(req: { method: string; body: { uuid: any; text: any; id: string }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { status?: string; error?: string; }): void; new(): any; }; }; }) {
+export default function handler(req: { method: string; body: { uuid: string; text: string; id: string }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { status?: string; error?: string; }): void; new(): any; }; }; }) {
     if (req.method === 'POST') {
         const { uuid, text, id } = req.body;
         const requestBody = {
@@ -10,7 +10,7 @@ export default function handler(req: { method: string; body: { uuid: any; text: 
                 text,
             }
         }
-        messageApiClient.sendTranscript(requestBody, (err: { message: any; }) => {
+        messageApiClient.sendTranscript(requestBody, (err: { message: string; }) => {
             if (err) console.log(`Error sending transcript to Message API ${err.message}`);
         })
         res.status(200).json({ status: 'ok' });
