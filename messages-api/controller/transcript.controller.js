@@ -14,13 +14,15 @@ const dbSaveAndPushResult = (uuid, transcript) => {
 
 const sendTranscript = (call, callback) => {
   const { transcriptItem, uuid } = call.request;
-  const { text } = transcriptItem;
+  const { text, id } = transcriptItem;
   callback(null, null);
 
   const defaultTranscript = {
-    id: v4(),
+    id,
     text,
   };
+
+  console.log(defaultTranscript);
 
   // Add correction
   getCorrections(text)

@@ -29,6 +29,7 @@ const getCorrections = async (text) => {
 
   // Filter all spelling mistakes from speech to text API
   const filteredMatches = matches.filter((match) => match.shortMessage !== 'Spelling mistake');
+  console.log(matches);
 
   const corrections = filteredMatches.map((match) => {
     const {
