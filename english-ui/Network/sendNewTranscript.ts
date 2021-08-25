@@ -1,4 +1,4 @@
-const sendNewTranscript = (uuid: string, text: string, id: string) => {
+const sendNewTranscript = (uuid: string, text: string, id: string): void => {
   const url = process.env.NEXT_PUBLIC_MESSAGES_API;
   if (url) {
     fetch(url, {

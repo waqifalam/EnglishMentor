@@ -7,8 +7,7 @@ import ResultsSection from '../sections/ResultsSection';
 import QuestionSection from '../sections/QuestionSection';
 import StoreProvider from '../utils/store';
 
-export default function Home() {
-
+export default function Home(): JSX.Element {
   return (
     <div className={styles.container}>
       <Head>

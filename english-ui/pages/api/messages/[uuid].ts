@@ -7,7 +7,7 @@ interface Message {
     correction: [];
 }
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default function handler(req: NextApiRequest, res: NextApiResponse): void {
     const uuid = req.query;
     const messages: Message[] = [];
     const call = messageApiClient.getResults(uuid);

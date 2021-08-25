@@ -23,8 +23,8 @@ type StoreContextType = {
 
 const emptyArray: Result[] = [];
 const initialState: StoreContextType = {
-  question: ['', () => {}],
-  results: [emptyArray, () => {}],
+  question: ['', () => { return }],
+  results: [emptyArray, () => { return }],
 };
 
 export const StoreContext = React.createContext(initialState);

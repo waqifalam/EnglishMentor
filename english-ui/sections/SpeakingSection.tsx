@@ -13,10 +13,10 @@ import { StoreContext } from '../utils/store';
 
 const timeInterval = Number(process.env.NEXT_PUBLIC_TIMEINTERVAL);
 
-const SpeakingSection = () => {
+const SpeakingSection = (): JSX.Element => {
   const { results: resultsContext, question: questionContext } = useContext(StoreContext);
   const [results, setResults] = resultsContext;
-  const [_, setQuestion] = questionContext;
+  const setQuestion = questionContext[1];
   const [isAskingQuestion, setIsAskingQuestion] = useState(false);
 
   const {
@@ -29,6 +29,11 @@ const SpeakingSection = () => {
   const [recordingTranscript, setRecordingTranscript] = useState(false);
   const [cookies] = useCookies({ uuid: '' });
 
+  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+    console.log('Your browser does not support speech recognition software! Try Chrome desktop, maybe?');
+    return (<div>Your Browser is not supported. Try Chrome desktop</div>);
+  }
+
   useEffect(() => {
     if (finalTranscript !== '' && !listening) {
       const id = v4();
@@ -39,25 +44,20 @@ const SpeakingSection = () => {
     }
   }, [interimTranscript, finalTranscript, listening]);
 
-//   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-//     console.log('Your browser does not support speech recognition software! Try Chrome desktop, maybe?');
-//     return (<div>Your Browser is not supported</div>);
-//   }
-
   useEffect(() => {
     if (recordingTranscript) {
-        const interval = setInterval(() => {
-            toggleButton();
-            clearInterval(interval);
-        }, timeInterval*1000);
+      const interval = setInterval(() => {
+          toggleButton();
+          clearInterval(interval);
+      }, timeInterval*1000);
     }
   }, [recordingTranscript])
 
   const toggleButton = () => {
     if (listening) {
-        SpeechRecognition.stopListening();
-        setRecordingTranscript(false);
-        setQuestion('');
+      SpeechRecognition.stopListening();
+      setRecordingTranscript(false);
+      setQuestion('');
     }
     else {
       setIsAskingQuestion(true);
@@ -80,22 +80,22 @@ const SpeakingSection = () => {
   };
 
   return (
-      <div>
-        <ButtonContainer>
-            <Button
-                onClick={toggleButton}
-                text={listening ? 'Listening' : 'Start Question'}
-                disabled={isAskingQuestion}
-            >
-                {listening ? (
-                    <ProgressRing
-                        radius={20}
-                        stroke={4}
-                        time={timeInterval}
-                    />
-                ) : <Image src='/speaking.svg' height={20} width={20} className='fill-current'/>}
-            </Button>
-        </ButtonContainer>
+    <div>
+      <ButtonContainer>
+        <Button
+          onClick={toggleButton}
+          text={listening ? 'Listening' : 'Start Question'}
+          disabled={isAskingQuestion}
+        >
+          {listening ? (
+            <ProgressRing
+              radius={20}
+              stroke={4}
+              time={timeInterval}
+            />
+          ) : <Image src='/speaking.svg' height={20} width={20} className='fill-current'/>}
+        </Button>
+      </ButtonContainer>
     </div>
   );
 };
