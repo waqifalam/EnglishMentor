@@ -29,11 +29,6 @@ const SpeakingSection = (): JSX.Element => {
   const [recordingTranscript, setRecordingTranscript] = useState(false);
   const [cookies] = useCookies({ uuid: '' });
 
-  if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-    console.log('Your browser does not support speech recognition software! Try Chrome desktop, maybe?');
-    return (<div>Your Browser is not supported. Try Chrome desktop</div>);
-  }
-
   useEffect(() => {
     if (finalTranscript !== '' && !listening) {
       const id = v4();

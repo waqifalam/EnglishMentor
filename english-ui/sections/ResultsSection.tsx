@@ -25,7 +25,8 @@ const ResultsSection = (): JSX.Element => {
   }, [results])
 
   useEffect(() => {
-    const pusher = new Pusher('3bb15c3711f3dd6e4fa3', {
+    if (!process.env.NEXT_PUBLIC_PUSHER_KEY) return;
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
       cluster: 'ap4'
     }); 
     if (cookies.uuid) {
