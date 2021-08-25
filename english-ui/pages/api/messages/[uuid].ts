@@ -1,3 +1,4 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import messageApiClient from '../../../lib/grpc/MessagesApiController';
 
 interface Message {
@@ -6,7 +7,7 @@ interface Message {
     correction: [];
 }
 
-export default function handler(req: any, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { messages: any[]; }): any; new(): any; }; }; }) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const uuid = req.query;
     const messages: Message[] = [];
     const call = messageApiClient.getResults(uuid);

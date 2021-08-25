@@ -1,6 +1,7 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import messageApiClient from '../../lib/grpc/MessagesApiController';
 
-export default function handler(req: { method: string; body: { uuid: string; text: string; id: string }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { status?: string; error?: string; }): void; new(): any; }; }; }) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         const { uuid, text, id } = req.body;
         const requestBody = {
