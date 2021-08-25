@@ -1,4 +1,5 @@
 import 'regenerator-runtime/runtime'
+import Image from 'next/image'
 import React, { useContext, useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import ProgressRing from '../components/ProgressRing';
@@ -16,6 +17,7 @@ const SpeakingSection = () => {
   const { results: resultsContext, question: questionContext } = useContext(StoreContext);
   const [results, setResults] = resultsContext;
   const [_, setQuestion] = questionContext;
+  const [isAskingQuestion, setIsAskingQuestion] = useState(false);
 
   const {
     interimTranscript,
@@ -32,7 +34,7 @@ const SpeakingSection = () => {
       const id = v4();
       const text = finalTranscript.charAt(0).toUpperCase() + finalTranscript.slice(1);
       sendNewTranscript(cookies.uuid, text, id);
-      setResults(() => [...results, { id, text, processingResults: true  }])
+      setResults(() => [...results, { id, text, processingResults: true, correction: []  }])
       resetTranscript();
     }
   }, [interimTranscript, finalTranscript, listening]);
@@ -58,18 +60,20 @@ const SpeakingSection = () => {
         setQuestion('');
     }
     else {
+      setIsAskingQuestion(true);
       getQuestion()
         .then(question => {
-          setQuestion(question)
+          setQuestion(question);
           const synth = window.speechSynthesis;
           const utterThis = new SpeechSynthesisUtterance(question);
           synth.speak(utterThis);
-          utterThis.onend = function() {
+          utterThis.onend = () => {
+            setIsAskingQuestion(false);
             SpeechRecognition.startListening({
               continuous: true,
               language: 'en-GB',
-              });
-              setRecordingTranscript(true)
+            });
+            setRecordingTranscript(true)
           }  
         })
     }
@@ -81,6 +85,7 @@ const SpeakingSection = () => {
             <Button
                 onClick={toggleButton}
                 text={listening ? 'Listening' : 'Start Question'}
+                disabled={isAskingQuestion}
             >
                 {listening ? (
                     <ProgressRing
@@ -88,7 +93,7 @@ const SpeakingSection = () => {
                         stroke={4}
                         time={timeInterval}
                     />
-                ) : null}
+                ) : <Image src='/speaking.svg' height={20} width={20} className='fill-current'/>}
             </Button>
         </ButtonContainer>
     </div>

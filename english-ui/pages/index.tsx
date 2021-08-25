@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import React from 'react';
 import styles from '../styles/Home.module.css'
+import 'tailwindcss/tailwind.css'
 import SpeakingSection from '../sections/SpeakingSection';
 import ResultsSection from '../sections/ResultsSection';
 import QuestionSection from '../sections/QuestionSection';
@@ -17,9 +18,11 @@ export default function Home() {
       </Head>
       <main>
       <StoreProvider>
-        <ResultsSection />
-        <QuestionSection />
-        <SpeakingSection />
+        <div className='px-5'>
+          <ResultsSection />
+          <QuestionSection />
+          <SpeakingSection />
+        </div>
       </StoreProvider>
       </main>
     </div>

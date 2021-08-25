@@ -3,7 +3,7 @@ import { useEffect, useContext } from 'react';
 import ResultsContainer from '../containers/ResultsContainer';
 import useCookies from '../hooks/useCookies';
 import Pusher from 'pusher-js';
-import { StoreContext } from '../utils/store';
+import { Result, StoreContext } from '../utils/store';
 import scrollToBottom from '../utils/scrollToBottom';
 
 const ResultsSection = () => {
@@ -30,7 +30,7 @@ const ResultsSection = () => {
         }); 
         if (cookies.uuid) {
             const channel = pusher.subscribe(cookies.uuid);
-            channel.bind('sendTranscript', (data) => {
+            channel.bind('sendTranscript', (data: Result) => {
                 setResults(() => results.map((result) => { return result.id === data.id ? data : result }));
             });
         }
@@ -44,30 +44,42 @@ const ResultsSection = () => {
             <div className='h-full w-full p-5'>
                 {(results && results.length) ? results.map((result, key) => {
                   const hasErrors = result.correction && result.correction.length;
-                  const isProcessing = result.processingResults;
+                  const status = (
+                    result.processingResults ? 'processing' :
+                    hasErrors ? 'error' :
+                    'success'
+                  );
 
                   return (
                     <div 
                         key={key}
                         className='bg-white w-full rounded-xl p-5 my-2 flex flex-col transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105'
-                        style={{ minHeight: '100px' }}
                     >
                       <div className='flex'>
                         <div className='mx-7'>
-                          <Image src={isProcessing ? ('/loading.svg') : (hasErrors ? '/redcross2.svg' : '/greentick.svg')} width="32" height="32"/>
+                          {
+                            {
+                              'processing': <Image src='/loading.svg' width="32" height="32" className='animate-spin'/>,
+                              'error': <Image src='/redcross.svg' width="32" height="32"/>,
+                              'success': <Image src='/greentick.svg' width="32" height="32"/>,
+                            }[status]
+                          }
                         </div>
                         <div>
                           <div><p className={hasErrors ? 'text-red-500' : 'text-green-600'}>{result.text}</p></div>
-                          {isProcessing ? <p>This result is being processed</p> : null}
-                          {(result.correction && result.correction.length) ? (
-                            <div><p className='italic'>Corrections:</p>
-                              <ul className='list-disc mx-5'>
-                              {result.correction.map((correction, correctionKey) => (<li key={correctionKey}>{correction.message}</li>))}
-                              </ul>
-                            </div>
-                          ) : (
-                            <div><p className='italic text-green-600 text-xs'>Good Job!</p></div>
-                          )}
+                          {
+                            {
+                              'processing': <p className='italic text-xs'>This result is being processed</p>,
+                              'error': (
+                                <div><p className='italic'>Corrections:</p>
+                                  <ul className='list-disc mx-5'>
+                                  {result.correction && result.correction.map((correction, correctionKey) => (<li key={correctionKey}>{correction.message}</li>))}
+                                  </ul>
+                                </div>
+                              ),
+                              'success': <div><p className='italic text-green-600 text-xs'>Good Job!</p></div>,
+                            }[status]
+                          }
                         </div>
                       </div>
                     </div>

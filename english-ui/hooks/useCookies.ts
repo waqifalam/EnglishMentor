@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Dispatch, SetStateAction } from 'react'
 import getCookies from '../utils/GetCookies';
 
 interface Cookies {
     uuid: string
 }
 
-const useCookies = (defaultValue: Cookies = { uuid: '' }) => {
+const useCookies = (defaultValue: Cookies = { uuid: '' }): [Cookies, Dispatch<SetStateAction<Cookies>>] => {
     const [cookies, setCookies] = useState(defaultValue);
 
     useEffect(() => {
