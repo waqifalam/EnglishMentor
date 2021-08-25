@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import ResultsContainer from '../containers/ResultsContainer';
 import useCookies from '../hooks/useCookies';
 import Pusher from 'pusher-js';

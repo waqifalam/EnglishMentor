@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Props {
     radius: number;
@@ -21,7 +21,7 @@ const ProgressRing: React.FC<Props> = ({ radius, stroke, time }) => {
             if (progress === 100) {
                 clearInterval(interval)
                 setProgress(0);
-            };
+            }
         }, 1000);
 
         return () => clearInterval(interval)

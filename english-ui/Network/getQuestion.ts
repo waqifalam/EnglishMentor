@@ -1,4 +1,4 @@
-const getQuestion = () => {
+const getQuestion: () => Promise<string> = () => {
     const url = process.env.NEXT_PUBLIC_QUESTION_API;
     if (url) {
         return fetch(url)
