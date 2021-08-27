@@ -46,20 +46,20 @@ const SpeakingSection = (): JSX.Element => {
   useEffect(() => {
     if (recordingTranscript) {
       const interval = setInterval(() => {
-          toggleButton();
+          stopListening();
           clearInterval(interval);
       }, timeInterval*1000);
     }
   }, [recordingTranscript])
 
-  const toggleButton = () => {
-    if (listening) {
-      SpeechRecognition.stopListening();
-      setRecordingTranscript(false);
-      setQuestion('');
-    }
-    else {
-      setIsAskingQuestion(true);
+  const stopListening = () => {
+    SpeechRecognition.stopListening();
+    setRecordingTranscript(false);
+    setQuestion('');
+  }
+
+  const startListening = () => {
+    setIsAskingQuestion(true);
       getQuestion()
         .then(question => {
           setQuestion(question);
@@ -69,14 +69,13 @@ const SpeakingSection = (): JSX.Element => {
             setRecordingTranscript(true)
           })
         })
-    }
-  };
+  }
 
   return (
     <div>
       <ButtonContainer>
         <Button
-          onClick={toggleButton}
+          onClick={listening ? stopListening : startListening}
           text={listening ? 'Listening' : 'Start Question'}
           disabled={isAskingQuestion}
         >
