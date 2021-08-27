@@ -2,9 +2,9 @@ import Image from 'next/image'
 import React, { useEffect, useContext } from 'react';
 import ResultsContainer from '../containers/ResultsContainer';
 import useCookies from '../hooks/useCookies';
-import Pusher from 'pusher-js';
-import { Result, StoreContext } from '../utils/store';
+import { StoreContext } from '../utils/store';
 import scrollToBottom from '../utils/scrollToBottom';
+import pusher from '../lib/Pusher/pusher';
 
 const ResultsSection = (): JSX.Element => {
   const { results: resultsContext } = useContext(StoreContext);
@@ -26,18 +26,8 @@ const ResultsSection = (): JSX.Element => {
 
   useEffect(() => {
     if (!process.env.NEXT_PUBLIC_PUSHER_KEY) return;
-    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
-      cluster: 'ap4'
-    }); 
-    if (cookies.uuid) {
-      const channel = pusher.subscribe(cookies.uuid);
-      channel.bind('sendTranscript', (data: Result) => {
-        setResults(() => results.map((result) => { return result.id === data.id ? data : result }));
-      });
-    }
-    return () => {
-      pusher.unsubscribe(cookies.uuid)
-    }
+    if (cookies.uuid) { pusher.subscribe(cookies.uuid, results, setResults) }
+    return () => { pusher.unsubscribe(cookies.uuid) }
   }, [cookies, results, setResults])
 
   return (

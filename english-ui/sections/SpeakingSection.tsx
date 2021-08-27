@@ -8,10 +8,15 @@ import useCookies from '../hooks/useCookies';
 import ButtonContainer from '../containers/ButtonContainer';
 import Button from '../components/Button';
 import getQuestion from '../Network/getQuestion';
-import { v4 } from 'uuid';
 import { StoreContext } from '../utils/store';
+import createTranscript from '../utils/createTranscript';
+import utter from '../lib/SpeechSynthesis/SpeechSynthesis';
 
 const timeInterval = Number(process.env.NEXT_PUBLIC_TIMEINTERVAL);
+const speechToTextOptions = {
+  continuous: true,
+  language: 'en-GB',
+};
 
 const SpeakingSection = (): JSX.Element => {
   const { results: resultsContext, question: questionContext } = useContext(StoreContext);
@@ -31,8 +36,7 @@ const SpeakingSection = (): JSX.Element => {
 
   useEffect(() => {
     if (finalTranscript !== '' && !listening) {
-      const id = v4();
-      const text = finalTranscript.charAt(0).toUpperCase() + finalTranscript.slice(1);
+      const { id, text } = createTranscript(finalTranscript);
       sendNewTranscript(cookies.uuid, text, id);
       setResults(() => [...results, { id, text, processingResults: true, correction: []  }])
       resetTranscript();
@@ -59,17 +63,11 @@ const SpeakingSection = (): JSX.Element => {
       getQuestion()
         .then(question => {
           setQuestion(question);
-          const synth = window.speechSynthesis;
-          const utterThis = new SpeechSynthesisUtterance(question);
-          synth.speak(utterThis);
-          utterThis.onend = () => {
+          utter(window.speechSynthesis, question, () => {
             setIsAskingQuestion(false);
-            SpeechRecognition.startListening({
-              continuous: true,
-              language: 'en-GB',
-            });
+            SpeechRecognition.startListening(speechToTextOptions);
             setRecordingTranscript(true)
-          }  
+          })
         })
     }
   };
