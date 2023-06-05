@@ -1,3 +1,4 @@
+import "tailwindcss/tailwind.css";
 import React, { useContext } from "react";
 import { StoreContext } from "../utils/store";
 

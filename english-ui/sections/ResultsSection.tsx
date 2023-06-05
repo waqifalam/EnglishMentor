@@ -6,6 +6,10 @@ import { Result, StoreContext } from "../utils/store";
 import scrollToBottom from "../utils/scrollToBottom";
 import PusherClient from "../lib/Pusher/PusherClient";
 
+import ProcessingSvg from '../public/Loading.svg';
+import ErrorSvg from '../public/RedCross.svg';
+import SuccessSvg from '../public/GreenTick.svg'
+
 const ResultsSection = (): JSX.Element => {
   const { results: resultsContext } = useContext(StoreContext);
   const [results, setResults] = resultsContext;
@@ -51,9 +55,9 @@ const ResultsSection = (): JSX.Element => {
                     <div className="mx-7">
                       {
                         {
-                          processing: <Image src="/loading.svg" width="32" height="32" className="animate-spin" />,
-                          error: <Image src="/redcross.svg" width="32" height="32" />,
-                          success: <Image src="/greentick.svg" width="32" height="32" />,
+                          processing: <Image src={ProcessingSvg} width="32" height="32" className="animate-spin" alt={""} />,
+                          error: <Image src={ErrorSvg} width="32" height="32" alt={""} />,
+                          success: <Image src={SuccessSvg} width="32" height="32" alt={""} />,
                         }[status]
                       }
                     </div>

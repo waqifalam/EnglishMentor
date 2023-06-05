@@ -1,14 +1,12 @@
-/* eslint-disable no-undef */
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  purge: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
-  darkMode: false, // or 'media' or 'class'
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx,mdx}", // Note the addition of the `app` directory.
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./containers/**/*.{js,ts,jsx,tsx,mdx}",
+    "./sections/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
-    extend: {},
-    fill: (theme) => ({
-      indigo: theme("colors.indigo.500"),
-    }),
-  },
-  variants: {
     extend: {},
   },
   plugins: [],

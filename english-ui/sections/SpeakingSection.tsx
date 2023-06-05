@@ -1,4 +1,5 @@
 import "regenerator-runtime/runtime";
+import "tailwindcss/tailwind.css";
 import Image from "next/image";
 import React, { useContext, useEffect, useState } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
@@ -11,6 +12,7 @@ import getQuestion from "../Network/getQuestion";
 import { StoreContext } from "../utils/store";
 import createTranscript from "../utils/createTranscript";
 import utter from "../lib/SpeechSynthesis/SpeechSynthesis";
+import SpeakingSvg from "../public/speaking.svg"
 
 const timeInterval = Number(process.env.NEXT_PUBLIC_TIMEINTERVAL);
 const speechToTextOptions = {
@@ -69,7 +71,7 @@ const SpeakingSection = (): JSX.Element => {
     <div>
       <ButtonContainer>
         <Button onClick={listening ? stopListening : startListening} text={listening ? "Listening" : "Start Question"} disabled={isAskingQuestion}>
-          {listening ? <ProgressRing radius={20} stroke={4} time={timeInterval} /> : <Image src="/speaking.svg" height={20} width={20} className="fill-current" />}
+          {listening ? <ProgressRing radius={20} stroke={4} time={timeInterval} /> : <Image src={SpeakingSvg} height={20} width={20} className="fill-current" alt={""} />}
         </Button>
       </ButtonContainer>
     </div>

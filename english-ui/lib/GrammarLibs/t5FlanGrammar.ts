@@ -11,6 +11,7 @@ const fixGrammar = async (text: string) => {
   };
   const data = {
     inputs: text,
+    wait_for_model: true,
   };
 
   return await axios.post<IHuggingFaceGeneratedText[]>(url, data, { headers });
