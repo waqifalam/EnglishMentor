@@ -6,6 +6,7 @@ export async function GET(request: Request, { params }: { params: { uuid: string
   const { uuid } = params;
   await dbConnect();
   const userTranscript = await Transcripts.findOne({ uuid }).exec();
+  if (!userTranscript || !userTranscript.transcripts) return NextResponse.json({ messages: [] });
   const transcripts = userTranscript.transcripts.map(({ id, text, correction }: { id: string; text: string; correction: string }) => ({ id, text, correction }));
   return NextResponse.json({ messages: transcripts });
 }
