@@ -1,11 +1,7 @@
 const getQuestion: () => Promise<string> = () => {
-  const url = process.env.NEXT_PUBLIC_QUESTION_API;
-  if (url) {
-    return fetch(url)
-            .then((res) => res.json())
-            .then((jsonResponse) => (jsonResponse.question || ''));
-  }
-  else throw new Error('No URL environment var set');
-}
+  return fetch("/api/question")
+    .then((res) => res.json())
+    .then((jsonResponse) => jsonResponse.question || "");
+};
 
 export default getQuestion;

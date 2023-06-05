@@ -1,16 +1,15 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import messageApiClient from '../../../lib/grpc/MessagesApiController';
+import { NextApiRequest, NextApiResponse } from "next";
+import dbConnect from "../../../lib/mongo/dbConnect";
+import Transcripts from "../../../lib/mongo/models/transcripts";
 
-interface Message {
-    id: string;
-    text: string;
-    correction: [];
-}
-
-export default function handler(req: NextApiRequest, res: NextApiResponse): void {
-    const uuid = req.query;
-    const messages: Message[] = [];
-    const call = messageApiClient.getResults(uuid);
-    call.on('data', (message: Message) => messages.push(message));
-    call.on('end', () => res.status(200).json({ messages }))
+export default async function handler(req: NextApiRequest, res: NextApiResponse): Promise<void> {
+  const { uuid } = req.query;
+  try {
+    await dbConnect();
+    const transcript = await Transcripts.findOne({ uuid }).exec();
+    res.status(200).json({ messages: transcript.transcripts });
+  } catch (err) {
+    console.error(err);
+    res.status(500);
+  }
 }

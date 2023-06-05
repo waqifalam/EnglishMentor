@@ -1,12 +1,12 @@
-import Head from 'next/head'
-import React from 'react';
-import styles from '../styles/Home.module.css'
-import 'tailwindcss/tailwind.css'
-import SpeakingSection from '../sections/SpeakingSection';
-import ResultsSection from '../sections/ResultsSection';
-import QuestionSection from '../sections/QuestionSection';
-import IncompatibilitySection from '../sections/IncompatibilitySection';
-import StoreProvider from '../utils/store';
+import Head from "next/head";
+import React from "react";
+import styles from "../styles/Home.module.css";
+import "tailwindcss/tailwind.css";
+import SpeakingSection from "../sections/SpeakingSection";
+import ResultsSection from "../sections/ResultsSection";
+import QuestionSection from "../sections/QuestionSection";
+import IncompatibilitySection from "../sections/IncompatibilitySection";
+import StoreProvider from "../utils/store";
 
 export default function Home(): JSX.Element {
   return (
@@ -17,15 +17,15 @@ export default function Home(): JSX.Element {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-      <IncompatibilitySection />
-      <StoreProvider>
-        <div className='px-5'>
-          <ResultsSection />
-          <QuestionSection />
-          <SpeakingSection />
-        </div>
-      </StoreProvider>
+        <IncompatibilitySection />
+        <StoreProvider>
+          <div className="px-5">
+            <ResultsSection />
+            <QuestionSection />
+            <SpeakingSection />
+          </div>
+        </StoreProvider>
       </main>
     </div>
-  )
+  );
 }

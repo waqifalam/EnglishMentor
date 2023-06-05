@@ -1,13 +1,13 @@
-import React, { useState, useEffect} from "react";
-import SpeechRecognition from 'react-speech-recognition';
-import Modal from '../components/Modal';
+import React, { useState, useEffect } from "react";
+import SpeechRecognition from "react-speech-recognition";
+import Modal from "../components/Modal";
 
 const IncompatibilitySection = (): JSX.Element => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) setShowModal(true);
-  }, [])
+  }, []);
 
   return (
     <Modal handleClose={() => setShowModal(false)} show={showModal}>
