@@ -1,8 +1,8 @@
-import sendTranscript from '@/lib/Transcripts/SendTranscript';
-import { NextResponse } from 'next/server';
- 
+import sendTranscript from "@/lib/Transcripts/SendTranscript";
+import { NextResponse } from "next/server";
+
 export async function POST(request: Request) {
-  const body = await request.json()
+  const body = await request.json();
   const { uuid, text, id } = body;
   const transcript = {
     uuid,
@@ -12,6 +12,6 @@ export async function POST(request: Request) {
     },
   };
 
-  sendTranscript(transcript);
-  return NextResponse.json({ status: 'ok' })
+  await sendTranscript(transcript);
+  return NextResponse.json({ status: "ok" });
 }
