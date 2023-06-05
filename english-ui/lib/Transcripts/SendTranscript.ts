@@ -13,7 +13,7 @@ const sendTranscript = async (transcript: TranscriptDao): Promise<void> => {
   const result = { ...transcriptItem, correction };
   await saveTranscript(uuid, result);
   console.log("saved to db");
-  PusherServer.trigger(uuid, "sendTranscript", result);
+  await PusherServer.trigger(uuid, "sendTranscript", result);
 };
 
 export default sendTranscript;
