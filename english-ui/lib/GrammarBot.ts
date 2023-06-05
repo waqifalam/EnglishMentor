@@ -17,8 +17,6 @@ const callGrammarBot = async (params: unknown) => {
 };
 
 const getCorrection = async (transcriptText: string): Promise<string> => {
-  // TODO: remove after testing
-  return "";
   const response = await callGrammarBot({ text: transcriptText });
   const grammarbotResponse = response.data;
   if (grammarbotResponse.edits?.length) return grammarbotResponse.correction;
