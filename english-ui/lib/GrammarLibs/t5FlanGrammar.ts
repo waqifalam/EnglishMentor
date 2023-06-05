@@ -8,6 +8,7 @@ const fixGrammar = async (text: string) => {
   const url = "https://api-inference.huggingface.co/models/vennify/t5-base-grammar-correction";
   const headers = {
     "content-type": "application/json",
+    Authorization: `Bearer ${process.env.HUGGING_FACE_BEARER_TOKEN}`,
   };
   const data = {
     inputs: text,
