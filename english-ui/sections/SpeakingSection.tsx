@@ -12,7 +12,7 @@ import getQuestion from "../Network/getQuestion";
 import { StoreContext } from "../utils/store";
 import createTranscript from "../utils/createTranscript";
 import utter from "../lib/SpeechSynthesis/SpeechSynthesis";
-import SpeakingSvg from "../public/speaking.svg"
+import SpeakingSvg from "../public/speaking.svg";
 
 const timeInterval = Number(process.env.NEXT_PUBLIC_TIMEINTERVAL);
 const speechToTextOptions = {
@@ -29,6 +29,7 @@ const SpeakingSection = (): JSX.Element => {
   const { interimTranscript, finalTranscript, resetTranscript, listening } = useSpeechRecognition({});
 
   const [recordingTranscript, setRecordingTranscript] = useState(false);
+  const [prevQuestion, setPrevQuestion] = useState("");
   const [cookies] = useCookies({ uuid: "" });
 
   useEffect(() => {
@@ -57,8 +58,11 @@ const SpeakingSection = (): JSX.Element => {
 
   const startListening = () => {
     setIsAskingQuestion(true);
-    getQuestion().then((question) => {
+    const lastResult = results.length ? results[results.length - 1].text : "";
+    const payload = prevQuestion ? [prevQuestion, lastResult] : [];
+    getQuestion(payload).then((question) => {
       setQuestion(question);
+      setPrevQuestion(question);
       utter(window.speechSynthesis, question, () => {
         setIsAskingQuestion(false);
         SpeechRecognition.startListening(speechToTextOptions);

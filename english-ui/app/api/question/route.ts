@@ -1,13 +1,9 @@
-import dbConnect from "@/lib/mongo/dbConnect";
 import { NextResponse } from "next/server";
-import Questions from "@/lib/mongo/models/questions";
+import OpenAssistantLLM from "@/lib/GrammarLibs/OpenAssistantLLM";
 
-export async function GET(request: Request) {
-  await dbConnect();
-  const question = await Questions.aggregate([{ $sample: { size: 1 } }]);
-  if (!question.length) {
-    console.error("DB does not contain any questions");
-    return NextResponse.json({ question: "" });
-  }
-  return NextResponse.json({ question: question[0].question });
+export async function POST(request: Request) {
+  const body = await request.json();
+  const { conversation } = body;
+  const question = await OpenAssistantLLM.getQuestion(conversation);
+  return NextResponse.json({ question });
 }
