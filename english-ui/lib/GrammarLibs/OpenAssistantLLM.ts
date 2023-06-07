@@ -40,7 +40,11 @@ const getCorrection = async (text: string): Promise<string> => {
   if (!response || !response.data) return "";
   const fixedSentence = (response.data.pop()?.generated_text || "").replace(prompt, "");
   if (!fixedSentence) return "";
-  if (fixedSentence === `${text}.`) return "";
+  const sanitiseString = (str: string) => {
+    const punctuation = /[\.,?!]/;
+    return str.toLowerCase().replace(punctuation, "");
+  };
+  if (sanitiseString(fixedSentence) === sanitiseString(text)) return "";
   return fixedSentence;
 };
 

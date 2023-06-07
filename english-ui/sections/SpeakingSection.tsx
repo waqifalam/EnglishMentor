@@ -1,5 +1,4 @@
 import "regenerator-runtime/runtime";
-import "tailwindcss/tailwind.css";
 import Image from "next/image";
 import React, { useContext, useEffect, useState } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
@@ -20,11 +19,18 @@ const speechToTextOptions = {
   language: "en-GB",
 };
 
+enum BUTTON_STATES {
+  start = "Start Question",
+  askingQuestion = "AI is asking question...",
+  listening = "Listening...",
+}
+
 const SpeakingSection = (): JSX.Element => {
   const { results: resultsContext, question: questionContext } = useContext(StoreContext);
   const [results, setResults] = resultsContext;
   const setQuestion = questionContext[1];
   const [isAskingQuestion, setIsAskingQuestion] = useState(false);
+  const [buttonState, setButtonState] = useState<BUTTON_STATES>(BUTTON_STATES.start);
 
   const { interimTranscript, finalTranscript, resetTranscript, listening } = useSpeechRecognition({});
 
@@ -54,18 +60,21 @@ const SpeakingSection = (): JSX.Element => {
     SpeechRecognition.stopListening();
     setRecordingTranscript(false);
     setQuestion("");
+    setButtonState(BUTTON_STATES.start);
   };
 
   const startListening = () => {
     setIsAskingQuestion(true);
     const lastResult = results.length ? results[results.length - 1].text : "";
     const payload = prevQuestion ? [prevQuestion, lastResult] : [];
+    setButtonState(BUTTON_STATES.askingQuestion);
     getQuestion(payload).then((question) => {
       setQuestion(question);
       setPrevQuestion(question);
       utter(window.speechSynthesis, question, () => {
         setIsAskingQuestion(false);
         SpeechRecognition.startListening(speechToTextOptions);
+        setButtonState(BUTTON_STATES.listening);
         setRecordingTranscript(true);
       });
     });
@@ -74,7 +83,7 @@ const SpeakingSection = (): JSX.Element => {
   return (
     <div>
       <ButtonContainer>
-        <Button onClick={listening ? stopListening : startListening} text={listening ? "Listening" : "Start Question"} disabled={isAskingQuestion}>
+        <Button buttonId="start-button" onClick={listening ? stopListening : startListening} text={buttonState} disabled={isAskingQuestion}>
           {listening ? <ProgressRing radius={20} stroke={4} time={timeInterval} /> : <Image src={SpeakingSvg} height={20} width={20} className="fill-current" alt={""} />}
         </Button>
       </ButtonContainer>
