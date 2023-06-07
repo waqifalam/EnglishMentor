@@ -33,10 +33,10 @@ const OnboardingTour = (): JSX.Element => {
 
   return (
     <>
-      <div className="flex pt-10 justify-center">
+      <div className="flex pt-5 pb-5 justify-center">
         <Image src={Logo} width={200} className="fill-current" alt={"EnglishMentor.io Logo"} />
       </div>
-      <div className="flex pb-10 pr-10">
+      <div className="flex pb-5 pr-10">
         <button onClick={() => setRunTour(true)} className="ml-auto bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded" id="onboarding-button">
           Learn to use!
         </button>
