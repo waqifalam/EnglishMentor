@@ -1,4 +1,5 @@
 # EnglishMentor
+
 ![english-mentor-logo](https://github.com/waqifalam/EnglishMentor/assets/41558152/e362366b-7334-45d3-9f64-1b9d06ebe957)
 
 ## Description
@@ -24,6 +25,8 @@ The following technologies were used to develop this app:
 - **AI Models**: `OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5` was employed to generate questions and perform error detection. This models leverage natural language processing capabilities to understand and analyze text and speech.
 
 - **Speech Recognition API**: The app integrates with a speech recognition API to convert the user's spoken response into text for analysis.
+
+- **Pusher**: The app utilizes Pusher, a web-hosted API that enables real-time updates. It allows for seamless communication between the server and the client, facilitating instant updates to user transcript results.
 
 ## Getting Started
 
