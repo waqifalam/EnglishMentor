@@ -1,6 +1,6 @@
 # EnglishMentor
 
-![english-mentor-logo](https://github.com/waqifalam/EnglishMentor/assets/41558152/e362366b-7334-45d3-9f64-1b9d06ebe957)
+![english-mentor-logo](/english-mentor-logo.png)
 
 ## Description
 
